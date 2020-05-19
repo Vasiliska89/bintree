@@ -22,8 +22,12 @@ void show(node* t, int n) {
 node* findright(node*& ptr) {
 	if (ptr->right == NULL) {
 		node* tmp = ptr;
+		node* s = new node;
+		s->id = tmp->id;
+		s->weight = tmp->weight;
 		ptr = ptr->left;
-		return tmp;
+		free(tmp);
+		return s;
 	}
 	else return findright(ptr->right);
 }
@@ -33,14 +37,17 @@ void del(node*& ptr, int val) {
 	}
 	else if (val > ptr->id) del(ptr->right, val);
 	else {
-		if (ptr->left == NULL) ptr = ptr->right;
+		if (ptr->left == NULL) {
+			node* tmp = ptr;
+			ptr = ptr->right;
+			free(tmp);
+		}
 		else {
 			if (ptr->right == NULL) ptr = ptr->left;
 			else {
 				node* tmp = findright(ptr->left);
 				ptr->id = tmp->id;
 				ptr->weight = tmp->weight;
-				tmp = tmp->left;
 			}
 		}
 	}
