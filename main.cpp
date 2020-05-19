@@ -43,17 +43,17 @@ void del(node*& ptr, int val) {
 		}
 	}
 }
-void push(node*& ptr, int val) {
+void push(node*& ptr, int val, int weight) {
 	if (val < ptr->id) {
 		if (ptr->left == NULL) {
 			node* tmp = new node;
 			tmp->id = val;
 			tmp->left = NULL;
 			tmp->right = NULL;
-			tmp->weight = pow(-rand() % 2, rand());
+			tmp->weight = weight;
 			ptr->left = tmp;
 		}
-		else push(ptr->left, val);
+		else push(ptr->left, val, weight);
 	}
 	else {
 		if (ptr->right == NULL) {
@@ -61,10 +61,10 @@ void push(node*& ptr, int val) {
 			tmp->id = val;
 			tmp->left = NULL;
 			tmp->right = NULL;
-			tmp->weight = pow(-rand() % 2, rand());
+			tmp->weight = weight;
 			ptr->right = tmp;
 		}
-		else push(ptr->right, val);
+		else push(ptr->right, val, weight);
 	}
 }
 void generate(node*& root) {
@@ -76,7 +76,7 @@ void generate(node*& root) {
 	tmp->weight = pow(-rand() % 2, rand());
 	root = tmp;
 	for (int i = 1; i < 10; i++) {
-		push(root, rand() % 10);
+		push(root, rand() % 10, pow(-rand()%2, rand()));
 	}
 }
 void menu() {
@@ -112,7 +112,7 @@ int main() {
 	node* root = NULL;
 	generate(root);
 	show(root, 1);
-	int t;
+	int t,s;
 	while (true) {
 		menu();
 		int i;
@@ -122,7 +122,11 @@ int main() {
 			std::cout << "¬ведите значение:" << std::endl;
 			
 			std::cin >> t;
-			push(root, t);
+			std::cout << "¬ведите вес:" << std::endl;
+
+			std::cin >> s;
+
+			push(root, t, s);
 			break;
 		case(2):
 			std::cout << "¬ведите значение:" << std::endl;
