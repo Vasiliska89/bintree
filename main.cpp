@@ -61,28 +61,8 @@ void push(node*& ptr, int val, int weight) {
 		ptr->right = NULL;
 		ptr->weight = weight;
 	}
-	else if (val < ptr->id) {
-		if (ptr->left == NULL) {
-			node* tmp = new node;
-			tmp->id = val;
-			tmp->left = NULL;
-			tmp->right = NULL;
-			tmp->weight = weight;
-			ptr->left = tmp;
-		}
-		else push(ptr->left, val, weight);
-	}
-	else {
-		if (ptr->right == NULL) {
-			node* tmp = new node;
-			tmp->id = val;
-			tmp->left = NULL;
-			tmp->right = NULL;
-			tmp->weight = weight;
-			ptr->right = tmp;
-		}
-		else push(ptr->right, val, weight);
-	}
+	else if (val < ptr->id)  push(ptr->left, val, weight);
+	else push(ptr->right, val, weight);
 }
 void generate(node*& root) {
 	srand(time(0));
