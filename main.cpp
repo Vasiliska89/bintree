@@ -48,12 +48,20 @@ void del(node*& ptr, int val) {
 				node* tmp = findright(ptr->left);
 				ptr->id = tmp->id;
 				ptr->weight = tmp->weight;
+				free(tmp);
 			}
 		}
 	}
 }
 void push(node*& ptr, int val, int weight) {
-	if (val < ptr->id) {
+	if (ptr == NULL) {
+		ptr = new node;
+		ptr->id = val;
+		ptr->left = NULL;
+		ptr->right = NULL;
+		ptr->weight = weight;
+	}
+	else if (val < ptr->id) {
 		if (ptr->left == NULL) {
 			node* tmp = new node;
 			tmp->id = val;
@@ -78,13 +86,7 @@ void push(node*& ptr, int val, int weight) {
 }
 void generate(node*& root) {
 	srand(time(0));
-	node* tmp = new node;
-	tmp->id = rand() % 10;
-	tmp->left = NULL;
-	tmp->right = NULL;
-	tmp->weight = pow(-rand() % 2, rand());
-	root = tmp;
-	for (int i = 1; i < 10; i++) {
+	for (int i = 0; i < 10; i++) {
 		push(root, rand() % 10, pow(-rand()%2, rand()));
 	}
 }
