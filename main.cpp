@@ -19,11 +19,11 @@ void show(node* t, int n) {
 	}
 }
 
-int findright(node*& ptr) {
+node* findright(node*& ptr) {
 	if (ptr->right == NULL) {
-		int t = ptr->id;
+		node* tmp = ptr;
 		ptr = ptr->left;
-		return t;
+		return tmp;
 	}
 	else return findright(ptr->right);
 }
@@ -37,8 +37,10 @@ void del(node*& ptr, int val) {
 		else {
 			if (ptr->right == NULL) ptr = ptr->left;
 			else {
-				int tmp = findright(ptr->left);
-				ptr->id = tmp;
+				node* tmp = findright(ptr->left);
+				ptr->id = tmp->id;
+				ptr->weight = tmp->weight;
+				tmp = tmp->left;
 			}
 		}
 	}
@@ -82,7 +84,7 @@ void generate(node*& root) {
 void menu() {
 	std::cout << "1 - Добавить элемент"<< std::endl;
 	std::cout << "2 - Удалить элемент"<<std::endl;
-	std::cout << "3 - Индивидуальное задание - Найти не менее 2х четных элементов с положительным весом" << std::endl;
+	std::cout << "3 - Индивидуальное задание - Найти 2 четных элемента с положительным весом" << std::endl;
 	std::cout << "4 - Показать дерево" << std::endl;
 	std::cout << "5 - Показать дерево с весами" << std::endl;
 	std::cout << "0 - Выход" << std::endl;
@@ -91,11 +93,14 @@ int indiv(node* ptr) {
 	int n = 0;
 	if (ptr != NULL) {
 		n+=indiv(ptr->left);
+		if (n >= 2) return n;
 		if (ptr->id % 2 == 0 && ptr->weight > 0) {
 			n++;
 			std::cout << ptr->id << "(" << ptr->weight << ") ";
+			if (n >= 2) return n;
 		}
 		n += indiv(ptr->right);
+		if (n >= 2) return n;
 	}
 	return n;
 }
